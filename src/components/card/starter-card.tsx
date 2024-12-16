@@ -37,8 +37,8 @@ function StartedCard() {
             <h2 className="font-bold text-4xl">Getting Start</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {cards.map((card, index) => (
-                <a href={card.href} key={index}>
-                    <Card className="flex flex-col hover:border-violet-800">
+                // <a href={card.href} key={index}>
+                    <Card key={index} className="flex flex-col hover:border-violet-800">
                         <CardHeader className="h-[400px] w-full flex justify-items-center rounded-lg">
                             <Image src={card.imageSrc} alt="image" width={500} height={300}/>
                         </CardHeader>
@@ -47,11 +47,10 @@ function StartedCard() {
                             <p className="text-neutral-400">{card.description}</p>
                         </CardContent>
                         <CardFooter>
-                            {/* <a href={card.href} className="flex flex-row gap-2 items-center text-xl text-blue-500 font-bold hover:underline">{card.title} <ArrowRight/></a> */}
                             <Button variant="link" className="p-0 h-auto text-blue-500 text-xl font-medium hover:underline"><a href={card.href} className="flex flex-row items-baseline gap-2">{card.title} <ArrowRight/></a></Button>
                         </CardFooter>
                     </Card>
-                </a>
+                // </a>
             ))}
             </div>
         </div>
