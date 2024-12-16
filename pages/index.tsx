@@ -7,6 +7,7 @@ import ShimmerButton from "@/components/ui/shimmer-button";
 import ClientWrapper from "@/components/wrapper/client-wrapper";
 import { cn } from "@/lib/utils";
 import type { NextPage } from "next";
+import Image from "next/image";
 import * as z from "zod";
 
 const faucetSchema = z.object({
@@ -42,14 +43,15 @@ const LeftSection = () => {
         <AnimatedGradientText>
           <span
             className={cn(
-              `h-22 text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold inline animate-gradient bg-gradient-to-r from-[#4facfe] via-[#1e3a8a] to-[#4facfe] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
+              // `h-22 text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold inline animate-gradient bg-gradient-to-r from-[#8FA4DD] via-[#1e3a8a] to-[#8FA4DD] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
+              `h-22 text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold inline animate-gradient bg-gradient-to-r from-[#CBD6F5] via-[#8FA4DD] to-[#CBD6F5] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
             )}
           >
             Gateway to Decentralized Trading Like Never Before
           </span>
         </AnimatedGradientText>
       </div>
-      <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-200 leading-relaxed my-5">
+      <p className="text-base sm:text-lg md:text-2xl text-gray-700 dark:text-white leading-relaxed my-5">
         Secure, Transparent, and Lightning-Fast
         <br />
         Harness the Power of Decentralization for Seamless Trade Execution
@@ -67,7 +69,13 @@ const RightSection = () => {
     <>
       <div className="hidden lg:flex w-full lg:w-1/3 justify-center lg:justify-end items-center">
         <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 lg:w-[35rem] md:h-[30rem] relative flex justify-center items-center animate-float">
-
+        <Image
+            src="/gif-hero.gif"
+            alt="Protect.Fi Logo"
+            width={500}
+            height={500}
+            className="object-contain block rounded-2xl"
+          />
         </div>
       </div>
     </>

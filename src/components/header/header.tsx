@@ -36,6 +36,11 @@ const Header = () => {
       <nav className=" flex flex-row justify-between items-center py-2 px-2">
         <div className="flex flex-row gap-2">
           <Link href="/" className="flex flex-row gap-2">
+            <img
+              src={currentTheme === "dark" ? "/logo.png" : "/logo-w.png"}
+              className="h-8"
+              alt="Liquid Book Logo"
+            />
             <p className="text-2xl lg:text-3xl font-bold mr-6">Liquid Book</p>
           </Link>
           <div className="hidden lg:flex gap-4">

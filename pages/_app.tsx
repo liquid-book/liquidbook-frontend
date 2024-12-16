@@ -9,6 +9,7 @@ import type { AppProps } from "next/app";
 import { WagmiProvider } from "wagmi";
 import { arbitrumSepolia } from "wagmi/chains";
 import "../styles/globals.css";
+import GradientBackground from "@/components/gradient-backgrounf/gradient-background";
 
 const localChain: Chain = {
   id: 1337,
