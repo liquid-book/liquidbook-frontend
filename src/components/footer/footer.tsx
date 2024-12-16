@@ -36,10 +36,10 @@ const Footer = () => {
 
     <footer
       className={
-        "border-t-2 border-solid border-gray-100 dark:border-gray-900 lg:mb-4 py-2 px-2 lg:px-[10vw]"
+        "border-t-2 border-solid border-gray-100 dark:border-gray-900 px-2 lg:px-[10vw]"
       }
     >
-      <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+      <div className="mx-auto w-full max-w-screen-xl p-4 pt-6 pb-3 lg:pt-8 lg:pb-4">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <a href="https://liquidbook.com/" className="flex items-center">

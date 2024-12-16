@@ -1,29 +1,13 @@
 import useCurrentTheme from "@/hooks/styles/theme";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Menu, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useEnsAvatar,
-  useEnsName,
-} from "wagmi";
 import { Button } from "../button/button";
 import { Sheet, SheetContent, SheetTrigger } from "../sheet/sheet";
 
 const Header = () => {
   const { setTheme } = useTheme();
-
   const currentTheme = useCurrentTheme();
-
-  // const { connectors, connect } = useConnect();
-  const { address } = useAccount();
-  // const { disconnect } = useDisconnect();
-  const { data: ensName } = useEnsName({ address });
-  // const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
-
   const links = [
     {
       destination: "/",
@@ -34,11 +18,11 @@ const Header = () => {
       label: "Vision",
     },
     {
-      destination: "/",
+      destination: "/dex",
       label: "Dex",
     },
     {
-      destination: "/urls",
+      destination: "/docs",
       label: "Documentation",
     },
   ];
@@ -55,78 +39,19 @@ const Header = () => {
             <p className="text-2xl lg:text-3xl font-bold mr-6">Liquid Book</p>
           </Link>
           <div className="hidden lg:flex gap-4">
-            {links.map((link) =>
-              link.label === "Pools" ? (
-                <div key={link.label} className="relative group">
-                  {/* Pools Link */}
-                  <Link href={link.destination} passHref>
-                    <Button variant="link" className="relative z-10">
-                      {link.label}
-                    </Button>
-                  </Link>
-
-                  {/* Dropdown on Hover dengan Animasi */}
-                  <div
-                    className="
-                absolute left-1/2 transform -translate-x-1/2 
-                top-full 
-                bg-white dark:bg-black shadow-xl rounded-xl p-3 w-44 z-20 border border-gray-100
-                opacity-0 scale-90 
-                group-hover:opacity-100 group-hover:scale-100 
-                transition-opacity transition-transform duration-500 ease-out 
-                pointer-events-none group-hover:pointer-events-auto
-              "
-                  >
-                    <Link href="/pools" passHref>
-                      <Button
-                        variant="ghost"
-                        className="
-                    w-full justify-start bg-gray-100 text-sm 
-                    hover:bg-gray-200 dark:hover:bg-gray-800 dark:bg-gray-700
-                  "
-                      >
-                        Explore Pools
-                      </Button>
-                    </Link>
-                    <Link href="/pools/create" passHref>
-                      <Button
-                        variant="ghost"
-                        className="
-                    w-full justify-start mt-1 bg-gray-100 text-sm 
-                    hover:bg-gray-200 dark:hover:bg-gray-800 dark:bg-gray-700
-                  "
-                      >
-                        Create Pools
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              ) : link.label === "Documentation" ? (
-                <a
-                  key={link.label}
-                  href={link.destination}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="no-underline"
-                >
-                  <Button variant="link">{link.label}</Button>
-                </a>
-              ) : (
-                <Link key={link.label} href={link.destination} passHref>
-                  <Button variant="link">{link.label}</Button>
-                </Link>
-              )
-            )}
+            {links.map((link) => (
+              <Link key={link.label} href={link.destination} passHref>
+                <Button variant="link">{link.label}</Button>
+              </Link>
+            ))}
           </div>
         </div>
         <div className="hidden lg:flex gap-2">
-          <ConnectButton></ConnectButton>
           <Button variant="ghost" onClick={changeTheme}>
             {currentTheme === "light" ? <Sun /> : <Moon />}
           </Button>
         </div>
         <div className="flex gap-2 lg:hidden">
-          <ConnectButton></ConnectButton>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" className="block lg:hidden">
