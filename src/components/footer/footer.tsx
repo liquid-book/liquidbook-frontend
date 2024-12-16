@@ -79,7 +79,7 @@ const Footer = () => {
                 {communities.map((community, index) => (
                   <li className="mb-4" key={index}>
                     <a
-                      href={community.destinaton}
+                      href={community.destination}
                       className="capitalize hover:underline"
                     >
                       {community.label}
