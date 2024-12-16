@@ -16,6 +16,7 @@ import {
   SheetContent,
   SheetTrigger
 } from "../sheet/sheet";
+import Image from "next/image";
 
 const Header = () => {
   const { setTheme } = useTheme();
@@ -54,7 +55,21 @@ const Header = () => {
   return (
     <div className=" backdrop-blur-sm fixed w-full border border-b-2 border-gray-100 dark:border-gray-900 flex flex-row justify-between items-center py-2 px-2 lg:px-[5vw] z-50">
       <div className="flex flex-row gap-2">
-        <Link href="/" className="flex flex-row gap-2">
+      <Link href="/" className="flex flex-row gap-2">
+          <Image
+            src="/logo-w.png"
+            alt="Protect.Fi Logo"
+            width={30}
+            height={30}
+            className="object-contain block dark:hidden"
+          />
+          <Image
+            src="/logo.png"
+            alt="Protect.Fi Logo"
+            width={30}
+            height={30}
+            className="object-contain hidden dark:block"
+          />
           <p className="text-2xl lg:text-3xl font-bold mr-6">Liquid Book</p>
         </Link>
         <div className="hidden lg:flex gap-4">
