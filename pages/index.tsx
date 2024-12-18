@@ -1,6 +1,9 @@
 'use client';
 
 import { Button } from "@/components/button/button";
+import StartedCard from "@/components/card/starter-card";
+import DevCarousel from "@/components/carousels/dev-carousel";
+import TradeCarousel from "@/components/carousels/trader-carousel";
 import AnimatedGradientText from "@/components/ui/animated-gradient-text";
 import RetroGrid from "@/components/ui/retro-grid";
 import ShimmerButton from "@/components/ui/shimmer-button";
@@ -28,7 +31,9 @@ const Home: NextPage = () => {
           </div>
           <RetroGrid />
         </div>
-
+        <TradeCarousel/>
+        <DevCarousel/>
+        <StartedCard/>
       </div>
     </main>
   );
