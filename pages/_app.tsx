@@ -1,11 +1,7 @@
 import Footer from "@/components/footer/footer";
 import Header from "@/components/header/header";
 import { wagmiConfig } from "@/configs/wagmi";
-import {
-  Chain,
-  darkTheme,
-  RainbowKitProvider
-} from "@rainbow-me/rainbowkit";
+import { Chain, darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
@@ -49,8 +45,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         <RainbowKitProvider
           initialChain={arbitrumSepolia}
           theme={darkTheme({
-            accentColor: 'white',
-            accentColorForeground: 'black',
+            accentColor: "white",
+            accentColorForeground: "black",
           })}
         >
           <ThemeProvider
@@ -59,11 +55,11 @@ function MyApp({ Component, pageProps }: AppProps) {
             value={{ light: "light", dark: "dark" }}
             defaultTheme="system"
           >
-            <GradientBackground>
-              <Header />
+            <Header />
+            <div className="lg:px-[10vw]">
               <Component {...pageProps} />
-              <Footer />
-            </GradientBackground>
+            </div>
+            <Footer />
           </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
