@@ -10,6 +10,7 @@ import { WagmiProvider } from "wagmi";
 import { arbitrumSepolia } from "wagmi/chains";
 import "../styles/globals.css";
 import GradientBackground from "@/components/gradient-backgrounf/gradient-background";
+import Head from "next/head";
 
 const localChain: Chain = {
   id: 1337,
@@ -49,6 +50,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             accentColorForeground: "black",
           })}
         >
+          <Head>
+            <link rel="icon" type="image/webp" href="/logo-w.png" />
+          </Head>
           <ThemeProvider
             disableTransitionOnChange
             attribute="class"

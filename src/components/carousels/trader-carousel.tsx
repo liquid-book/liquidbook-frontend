@@ -39,7 +39,7 @@ function TradeCarousel() {
     ];    
 
     return (
-        <div className="flex justify-center w-full mt-[43px] h-screen">
+        <div className="flex justify-center w-full my-12">
             <div className="flex flex-col items-start justify-center w-full max-w-[1280px] min-w-[768px] gap-8">
                 <h2 className="font-bold text-4xl">For Traders</h2>
                 <Carousel
