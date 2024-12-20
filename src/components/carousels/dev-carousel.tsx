@@ -1,6 +1,5 @@
 import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
-import { Card } from "../ui/card";
 import { 
     Carousel,
     CarouselContent,
@@ -15,67 +14,91 @@ function DevCarousel() {
         Autoplay({delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true})
     )
 
-    const carousels = [
+    interface Carousel {
+        image: string,
+        title: string,
+        text: string,
+    }
+
+    const carousels : Carousel[] = [
         {
-            image: "/devCarousel1.jpg",
+            image: "/images/devCarousel1.jpg",
             title: "Open-source architecture",
             text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         },
         {
-            image: "/devCarousel2.webp",
+            image: "/images/devCarousel2.webp",
             title: "Comprehensive API",
             text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         },
         {
-            image: "/devCarousel3.jpg",
+            image: "/images/devCarousel3.jpg",
             title: "Custom integration options",
             text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         },
         {
-            image: "/devCarousel4.jpg",
+            image: "/images/devCarousel4.jpg",
             title: "Developer-friendly documentation",
             text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         }
     ];    
 
-    return (
-        <div className="flex justify-center w-full mt-[43px] h-screen">
-            <div className="flex flex-col items-start justify-center w-full max-w-[1280px] min-w-[768px] gap-8">
-                <h2 className="font-bold text-4xl">For Developers</h2>
-                <Carousel
-                    plugins={[plugin.current]}
-                    opts={{
-                        align: "center",
-                        loop: true
-                    }}
-                    className="w-full min-h-fit h-fit"
-                >
-                    <CarouselContent>
-                        {carousels.map(function (carousel, index) {
-                            return (
-                                <CarouselItem key={index}>
-                                    <Card>
-                                        <div className="w-full flex flex-row h-fit">
-                                            <div className="w-fit">
-                                                <Image src={carousel.image} alt="Carousel" width={1200} height={1200} className="rounded-xl"/>
-                                            </div>
-                                            <div className="w-full p-10 flex flex-col justify-between">
-                                                <div className="flex flex-col gap-8">
-                                                    <h4 className="font-bold text-4xl">{carousel.title}</h4>
-                                                    <p className="text-neutral-400">{carousel.text}</p>
-                                                </div>
-                                                <button className="border border-black dark:border-white rounded-lg w-fit px-4 py-2 font-medium">Show more</button>
-                                            </div>
-                                        </div>
-                                    </Card>
-                                </CarouselItem>  
-                            )
-                        })}
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                </Carousel>
+    return (            
+        <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto">
+            <div className="text-start mb-8 sm:mb-12">
+                <h2 className="font-bold text-3xl md:text-4xl text-black dark:text-white">
+                    For Developers
+                </h2>
             </div>
+            <Carousel
+                plugins={[plugin.current]}
+                opts={{
+                    align: "center",
+                    loop: true
+                }}
+                className="w-full min-h-fit h-fit"
+            >
+                <CarouselContent>
+                    {carousels.map(function (carousel, index) {
+                        return (
+                            <CarouselItem key={index}>
+                                <div className="flex flex-col md:flex-row items-center justify-between bg-white dark:bg-gray-900 text-black dark:text-white p-6 sm:p-8 lg:p-10 rounded-2xl shadow-2xl mx-auto gap-8 sm:gap-12 md:gap-16 border border-gray-200 dark:border-gray-900 hover:border hover:border-indigo-500/100 dark:hover:border dark:hover:border-indigo-500/100 transition-all duration-300">
+                                    <div className="w-full md:w-1/2 flex justify-center md:justify-start">
+                                        <div className="relative w-[22rem] h-[22rem] sm:w-[30rem] sm:h-[30rem]">
+                                            <Image
+                                                src={carousel.image}
+                                                alt="Multi Use Case Illustration"
+                                                fill
+                                                className="rounded-2xl shadow-lg object-cover"
+                                                priority
+                                            />
+                                        </div>
+                                    </div>
+                    
+                                    <div className="w-full md:w-1/2 text-center md:text-left space-y-6">
+                                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
+                                            {carousel.title}
+                                        </h3>
+                                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base sm:text-lg">
+                                            {carousel.text}
+                                        </p>
+                                        <div className="flex justify-center md:justify-start w-full">
+                                            <a
+                                                href="#"
+                                                className="w-full md:w-auto inline-block bg-gradient-to-r from-indigo-500 to-blue-500 text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg text-base sm:text-lg font-semibold hover:opacity-80 transition-all duration-300 text-center"
+                                            >
+                                                Documentation →
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CarouselItem>  
+                        )
+                    })}
+                </CarouselContent>
+                <CarouselPrevious className="flex items-center max-lg:hidden" />
+                <CarouselNext className="flex items-center max-lg:hidden"/>
+            </Carousel>
         </div>
     );
 }
