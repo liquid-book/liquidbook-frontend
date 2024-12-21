@@ -34,9 +34,9 @@ const Home: NextPage = () => {
         </div>
         <KeyFeatures />
         {/* yang aku commet belom responsive ya */}
-        {/* <TradeCarousel /> */}
-        {/* <DevCarousel /> */}
-        {/* <StartedCard /> */}
+        <TradeCarousel />
+        <DevCarousel />
+        <StartedCard />
       </div>
     </main>
   );
