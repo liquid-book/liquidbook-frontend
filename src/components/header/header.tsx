@@ -33,8 +33,8 @@ const Header = () => {
 
   return (
     <header className="backdrop-blur-sm lg:px-[10vw] mx-auto w-full fixed border border-b-2 border-gray-100 dark:border-gray-900  z-50">
-      <nav className=" flex flex-row justify-between items-center py-2 px-2">
-        <div className="flex flex-row gap-2">
+      <nav className="flex flex-row justify-between items-center py-2 px-2">
+        <div className="flex flex-row gap-2 grow">
           <Link href="/" className="flex flex-row gap-2">
             <img
               src={currentTheme === "dark" ? "/logo.png" : "/logo-w.png"}
@@ -43,10 +43,17 @@ const Header = () => {
             />
             <p className="text-2xl lg:text-3xl font-bold mr-6">Liquid Book</p>
           </Link>
-          <div className="hidden lg:flex gap-4">
+          <div className="hidden lg:flex gap-4 items-center mx-auto">
             {links.map((link) => (
-              <Link key={link.label} href={link.destination} passHref>
-                <Button variant="link">{link.label}</Button>
+              <Link
+                key={link.label}
+                href={link.destination}
+                passHref
+                className={`block px-3 py-2 rounded-md text-base font-medium text-gray-700 
+                  hover:bg-gradient-to-r from-[#2B3990] to-[#533593] hover:text-white`}
+              >
+                {/* <Button variant="link">{link.label}</Button> */}
+                {link.label}
               </Link>
             ))}
           </div>

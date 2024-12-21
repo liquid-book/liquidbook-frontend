@@ -42,8 +42,8 @@ const Footer = () => {
       }
     >
       <div className="mx-auto w-full max-w-screen-xl p-4 pt-6 pb-3 lg:pt-8 lg:pb-4">
-        <div className="md:flex md:justify-between">
-          <div className="mb-6 md:mb-0">
+        <div className="md:flex md:justify-between gap-4">
+          <div className="mb-6 md:mb-0 flex-none">
             <a href="https://liquidbook.com/" className="flex items-center">
               <img
                 src={currentTheme === "dark" ? "/logo.png" : "/logo-w.png"}
@@ -55,7 +55,7 @@ const Footer = () => {
               </span>
             </a>
           </div>
-          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 sm:grid-cols-2 sm:w-1/3">
             <div>
               <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Resources
