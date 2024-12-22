@@ -20,8 +20,8 @@ type LayoutMode = 'standard' | 'depth';
 
 // Constants
 const BASE_PRICE = 3520.42;
-const DEPTH_ORDER_COUNT = 13;
-const STANDARD_ORDER_COUNT = 7;
+const DEPTH_ORDER_COUNT = 9;
+const STANDARD_ORDER_COUNT = 5;
 const UPDATE_INTERVAL = 1000;
 const PRICE_VOLATILITY = 0.0001;
 const SIZE_MIN = 0.001;

@@ -9,8 +9,9 @@ import type { AppProps } from "next/app";
 import { WagmiProvider } from "wagmi";
 import { arbitrumSepolia } from "wagmi/chains";
 import "../styles/globals.css";
-import GradientBackground from "@/components/gradient-backgrounf/gradient-background";
 import Head from "next/head";
+import { ReactNode } from "react";
+import { NextPage } from "next/types";
 
 const localChain: Chain = {
   id: 1337,
@@ -39,8 +40,18 @@ const localChain: Chain = {
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
+// Tambahkan tipe untuk mendukung getLayout
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactNode) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  // Ambil getLayout dari komponen, fallback ke Main Layout
+  const getLayout = Component.getLayout || ((page: ReactNode) => (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
@@ -59,16 +70,19 @@ function MyApp({ Component, pageProps }: AppProps) {
             value={{ light: "light", dark: "dark" }}
             defaultTheme="system"
           >
-            {/* <Header /> */}
+            <Header />
             <div className="lg:px-[10vw]">
-              <Component {...pageProps} />
+              {page}
             </div>
-            {/* <Footer /> */}
+            <Footer />
           </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
-  );
+  ));
+
+  return getLayout(<Component {...pageProps} />);
 }
 
 export default MyApp;
+
