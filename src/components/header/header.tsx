@@ -14,13 +14,13 @@ const Header = () => {
       label: "Home",
     },
     {
-      destination: "/vision",
-      label: "Vision",
+      destination: "/trade",
+      label: "Trade",
     },
-    {
-      destination: "/dex",
-      label: "Dex",
-    },
+    // {
+    //   destination: "/dex",
+    //   label: "Dex",
+    // },
     {
       destination: "/docs",
       label: "Documentation",
@@ -35,7 +35,7 @@ const Header = () => {
     <header className="backdrop-blur-sm lg:px-[10vw] mx-auto w-full fixed border border-b-2 border-gray-100 dark:border-gray-900  z-50">
       <nav className="flex flex-row justify-between items-center py-2 px-2">
         <div className="flex flex-row gap-2 grow">
-          <Link href="/" className="flex flex-row gap-2">
+          <Link href="/" className="flex flex-row gap-2 w-56">
             <img
               src={currentTheme === "dark" ? "/logo.png" : "/logo-w.png"}
               className="h-8"
@@ -58,7 +58,7 @@ const Header = () => {
             ))}
           </div>
         </div>
-        <div className="hidden lg:flex gap-2">
+        <div className="hidden lg:flex gap-2 w-56 justify-end">
           <Button variant="ghost" onClick={changeTheme}>
             {currentTheme === "light" ? <Sun /> : <Moon />}
           </Button>

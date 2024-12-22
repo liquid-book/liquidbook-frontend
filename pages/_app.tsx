@@ -67,8 +67,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           <ThemeProvider
             disableTransitionOnChange
             attribute="class"
+            defaultTheme="dark"
             value={{ light: "light", dark: "dark" }}
-            defaultTheme="system"
+            // defaultTheme="system"
           >
             <Header />
             <div className="lg:px-[10vw]">
