@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useEffect, useRef, memo } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const TradingViewWidget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -8,11 +6,15 @@ const TradingViewWidget = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Store ref value in a variable for cleanup
+    const container = containerRef.current;
+    
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
     script.type = "text/javascript";
     script.async = true;
     script.innerHTML = JSON.stringify({
+      container_id: "tradingview_chart",
       autosize: true,
       symbol: "OKX:ETHUSDC",
       interval: "5",
@@ -23,12 +25,6 @@ const TradingViewWidget = () => {
       enable_publishing: false,
       hide_side_toolbar: false,
       allow_symbol_change: true,
-    //   backgroundColor: "#0E0E0E",
-    //   gridColor: "#1E1E1E",
-      calendar: false,
-      hide_volume: false,
-    //   toolbar_bg: "#0E0E0E",
-    //   support_host: "https://www.tradingview.com",
       disabled_features: [
         "header_symbol_search",
         "header_settings",
@@ -43,27 +39,27 @@ const TradingViewWidget = () => {
         "create_volume_indicator_by_default",
         "volume_force_overlay"
       ],
+      library_path: "/charting_library/",
     });
 
-    containerRef.current.appendChild(script);
+    container.appendChild(script);
 
+    // Cleanup function uses the stored container reference
     return () => {
-      if (containerRef.current) {
-        const scriptElement = containerRef.current.querySelector('script');
-        if (scriptElement) {
-          scriptElement.remove();
-        }
+      const scriptElement = container.querySelector('script');
+      if (scriptElement) {
+        scriptElement.remove();
       }
     };
   }, []);
 
   return (
-    <div 
-      id="tradingview_chart" 
-      ref={containerRef} 
-      className="w-full h-[502px] bg-[#0E0E0E]"
+    <div
+      id="tradingview_chart"
+      ref={containerRef}
+      className="w-full h-[560px] bg-gray-900"
     />
   );
 };
 
-export default memo(TradingViewWidget);
+export default TradingViewWidget;

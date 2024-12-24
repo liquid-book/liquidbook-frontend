@@ -1,9 +1,10 @@
-// Types
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Grid, Menu, ArrowUp, ArrowDown } from 'lucide-react';
+
 interface Order {
     price: number;
     size: number;
     total?: number;
-    timestamp?: number;
 }
 
 interface OrderBook {
@@ -19,120 +20,183 @@ type DecimalPrecision = '0.01' | '0.1' | '1';
 type LayoutMode = 'standard' | 'depth';
 
 // Constants
-const BASE_PRICE = 3520.42;
-const DEPTH_ORDER_COUNT = 9;
-const STANDARD_ORDER_COUNT = 5;
-const UPDATE_INTERVAL = 1000;
-const PRICE_VOLATILITY = 0.0001;
-const SIZE_MIN = 0.001;
-const SIZE_MAX = 35;
+const DEPTH_ORDER_COUNT = 11;
+const STANDARD_ORDER_COUNT = 6;
 
-// Helper functions
-const generateRandomPrice = (basePrice: number): number => {
-    const change = basePrice * PRICE_VOLATILITY * (Math.random() - 0.5);
-    return Number((basePrice + change).toFixed(2));
+const OrderBookSkeleton = ({ layoutMode }: { layoutMode: 'standard' | 'depth' }) => {
+    return (
+        <div className="w-full max-w-xs mx-auto bg-gray-900 rounded-xl border border-gray-800 text-white p-4 animate-pulse">
+            {/* Header Controls Skeleton */}
+            <div className="flex items-center justify-between mb-4">
+                <div className="flex gap-2">
+                    <div className="w-8 h-8 bg-gray-800 rounded" />
+                    <div className="w-8 h-8 bg-gray-800 rounded" />
+                </div>
+                <div className="w-16 h-8 bg-gray-800 rounded" />
+            </div>
+
+            {layoutMode === 'depth' ? (
+                // Depth View Skeleton
+                <div>
+                    {/* Last Price Skeleton */}
+                    <div className="text-center mb-4">
+                        <div className="w-24 h-6 bg-gray-800 rounded mx-auto mb-2" />
+                        <div className="w-20 h-4 bg-gray-800 rounded mx-auto" />
+                    </div>
+
+                    {/* Column Headers */}
+                    <div className="grid grid-cols-3 mb-2">
+                        <div className="w-12 h-4 bg-gray-800 rounded" />
+                        <div className="w-12 h-4 bg-gray-800 rounded mx-auto" />
+                        <div className="w-12 h-4 bg-gray-800 rounded ml-auto" />
+                    </div>
+
+                    {/* Depth Rows */}
+                    {[...Array(11)].map((_, i) => (
+                        <div key={i} className="grid grid-cols-3 gap-2 mb-1">
+                            <div className="w-16 h-4 bg-gray-800 rounded" />
+                            <div className="flex justify-center space-x-4">
+                                <div className="w-16 h-4 bg-gray-800 rounded" />
+                                <div className="w-16 h-4 bg-gray-800 rounded" />
+                            </div>
+                            <div className="w-16 h-4 bg-gray-800 rounded ml-auto" />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                // Standard View Skeleton
+                <div>
+                    {/* Column Headers */}
+                    <div className="grid grid-cols-2 mb-2">
+                        <div className="w-12 h-4 bg-gray-800 rounded" />
+                        <div className="w-12 h-4 bg-gray-800 rounded ml-auto" />
+                    </div>
+
+                    {/* Asks */}
+                    <div className="space-y-1 mb-2">
+                        {[...Array(8)].map((_, i) => (
+                            <div key={`ask-${i}`} className="grid grid-cols-2 gap-4">
+                                <div className="w-20 h-4 bg-gray-800 rounded" />
+                                <div className="w-20 h-4 bg-gray-800 rounded ml-auto" />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Price Spread */}
+                    <div className="py-4 flex justify-between">
+                        <div className="w-24 h-4 bg-gray-800 rounded" />
+                        <div className="w-20 h-4 bg-gray-800 rounded" />
+                    </div>
+
+                    {/* Bids */}
+                    <div className="space-y-1">
+                        {[...Array(8)].map((_, i) => (
+                            <div key={`bid-${i}`} className="grid grid-cols-2 gap-4">
+                                <div className="w-20 h-4 bg-gray-800 rounded" />
+                                <div className="w-20 h-4 bg-gray-800 rounded ml-auto" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Volume Bar Skeleton */}
+            <div className="h-6 flex mt-4">
+                <div className="w-1/2 h-full bg-gray-800 rounded-l" />
+                <div className="w-1/2 h-full bg-gray-800 rounded-r" />
+            </div>
+        </div>
+    );
 };
 
-const generateRandomSize = (): number => {
-    return Number((SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN)).toFixed(6));
-};
-
-const calculateTotal = (orders: Order[]): Order[] => {
-    let runningTotal = 0;
-    return orders.map(order => {
-        runningTotal += order.size;
-        return { ...order, total: runningTotal };
-    });
-};
-
-const generateInitialOrderBook = (isDepthView: boolean = false): OrderBook => {
-    const orderCount = isDepthView ? DEPTH_ORDER_COUNT : STANDARD_ORDER_COUNT;
-    const asks: Order[] = Array.from({ length: orderCount }, (_, i) => ({
-        price: BASE_PRICE + (i * 0.5),
-        size: generateRandomSize(),
-        total: 0,
-        timestamp: Date.now()
-    }));
-
-    const bids: Order[] = Array.from({ length: orderCount }, (_, i) => ({
-        price: BASE_PRICE - ((i + 1) * 0.5),
-        size: generateRandomSize(),
-        total: 0,
-        timestamp: Date.now()
-    }));
-
-    const sortedAsks = calculateTotal(asks.sort((a, b) => a.price - b.price));
-    const sortedBids = calculateTotal(bids.sort((a, b) => b.price - a.price));
-
-    return {
-        asks: sortedAsks,
-        bids: sortedBids,
-        lastPrice: BASE_PRICE,
-        spread: Number((sortedAsks[0].price - sortedBids[0].price).toFixed(2)),
-        lastUpdate: Date.now()
-    };
-};
-
-const updateOrderBook = (currentBook: OrderBook): OrderBook => {
-    const newAsks = currentBook.asks.map(ask => ({
-        ...ask,
-        price: Math.random() < 0.2 ? generateRandomPrice(ask.price) : ask.price,
-        size: Math.random() < 0.3 ? generateRandomSize() : ask.size,
-        timestamp: Date.now()
-    }));
-
-    const newBids = currentBook.bids.map(bid => ({
-        ...bid,
-        price: Math.random() < 0.2 ? generateRandomPrice(bid.price) : bid.price,
-        size: Math.random() < 0.3 ? generateRandomSize() : bid.size,
-        timestamp: Date.now()
-    }));
-
-    const sortedAsks = calculateTotal(newAsks.sort((a, b) => a.price - b.price));
-    const sortedBids = calculateTotal(newBids.sort((a, b) => b.price - a.price));
-    const newLastPrice = Math.random() < 0.5 ? sortedBids[0].price : sortedAsks[0].price;
-
-    return {
-        asks: sortedAsks,
-        bids: sortedBids,
-        lastPrice: newLastPrice,
-        spread: Number((sortedAsks[0].price - sortedBids[0].price).toFixed(2)),
-        lastUpdate: Date.now()
-    };
-};
-
-// React Component
-import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowUpRight, ArrowDownRight, Grid, Menu, ArrowUp01, ArrowDown01, ArrowUp, ArrowDown } from 'lucide-react';
-
-const OrderBookComponent: React.FC = () => {
+const OrderBookComponent = () => {
     const [mounted, setMounted] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true); // Only for initial load
     const [layoutMode, setLayoutMode] = useState<LayoutMode>('standard');
-    const [orderBook, setOrderBook] = useState<OrderBook>(generateInitialOrderBook(layoutMode === 'depth'));
     const [selectedDecimal, setSelectedDecimal] = useState<DecimalPrecision>('0.01');
+    const [fullOrderBook, setFullOrderBook] = useState<OrderBook>({
+        asks: [],
+        bids: [],
+        lastPrice: 0,
+        spread: 0,
+        lastUpdate: Date.now()
+    });
     const [viewType, setViewType] = useState<ViewType>('both');
-    const [isUpdating, setIsUpdating] = useState<boolean>(true);
     const [priceDirection, setPriceDirection] = useState<'up' | 'down'>('up');
 
-    // Set mounted state after initial render
+    const orderBook = useMemo(() => {
+        const orderCount = layoutMode === 'depth' ? DEPTH_ORDER_COUNT : STANDARD_ORDER_COUNT;
+        return {
+            ...fullOrderBook,
+            asks: fullOrderBook.asks.slice(0, orderCount),
+            bids: fullOrderBook.bids.slice(0, orderCount)
+        };
+    }, [fullOrderBook, layoutMode]);
+
+    const calculateTotal = (orders: Order[]): Order[] => {
+        let runningTotal = 0;
+        return orders.map(order => {
+            runningTotal += order.size;
+            return { ...order, total: runningTotal };
+        });
+    };
+
+    const formatPrice = (price: number): string => {
+        const precision = parseFloat(selectedDecimal);
+        return (Math.round(price / precision) * precision).toFixed(2);
+    };
+
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    // Handle price updates and direction
     useEffect(() => {
-        if (!mounted || !isUpdating) return;
+        if (!mounted) return;
 
-        const interval = setInterval(() => {
-            setOrderBook(prevBook => {
-                const newBook = updateOrderBook(prevBook);
-                setPriceDirection(newBook.lastPrice >= prevBook.lastPrice ? 'up' : 'down');
-                return newBook;
-            });
-        }, UPDATE_INTERVAL);
+        const fetchOrderBook = async () => {
+            try {
+                const response = await fetch('https://www.okx.com/api/v5/market/books?instId=ETH-USDC&sz=20');
+                const data = await response.json();
+
+                if (data.data?.[0]) {
+                    const bookData = data.data[0];
+                    const asks = bookData.asks.map((ask: string[]) => ({
+                        price: parseFloat(ask[0]),
+                        size: parseFloat(ask[1])
+                    }));
+                    const bids = bookData.bids.map((bid: string[]) => ({
+                        price: parseFloat(bid[0]),
+                        size: parseFloat(bid[1])
+                    }));
+
+                    const sortedAsks = calculateTotal(asks.sort((a: Order, b: Order) => a.price - b.price));
+                    const sortedBids = calculateTotal(bids.sort((a: Order, b: Order) => b.price - a.price));
+
+                    const newOrderBook = {
+                        asks: sortedAsks,
+                        bids: sortedBids,
+                        lastPrice: parseFloat(bookData.asks[0][0]),
+                        spread: Number((parseFloat(bookData.asks[0][0]) - parseFloat(bookData.bids[0][0])).toFixed(2)),
+                        lastUpdate: Date.now()
+                    };
+
+                    setFullOrderBook(prevBook => {
+                        setPriceDirection(newOrderBook.lastPrice >= prevBook.lastPrice ? 'up' : 'down');
+                        return newOrderBook;
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching order book:', error);
+            } finally {
+                setInitialLoading(false); // Set initial loading to false after first fetch
+            }
+        };
+
+        const interval = setInterval(fetchOrderBook, 1000);
+        fetchOrderBook(); // Initial fetch
 
         return () => clearInterval(interval);
-    }, [mounted, isUpdating]);
+    }, [mounted]);
 
     const toggleView = useCallback(() => {
         const views: ViewType[] = ['both', 'bids', 'asks'];
@@ -141,35 +205,22 @@ const OrderBookComponent: React.FC = () => {
     }, [viewType]);
 
     const toggleLayoutMode = useCallback(() => {
-        setLayoutMode(prev => {
-            const newMode = prev === 'standard' ? 'depth' : 'standard';
-            // Regenerate order book with new order count
-            setOrderBook(generateInitialOrderBook(newMode === 'depth'));
-            return newMode;
-        });
+        setLayoutMode(prev => prev === 'standard' ? 'depth' : 'standard');
     }, []);
 
-    const toggleUpdates = useCallback(() => {
-        setIsUpdating(prev => !prev);
-    }, []);
-
+    // Calculate volumes
     const totalBuyVolume = orderBook.bids.reduce((acc, bid) => acc + bid.size, 0);
     const totalSellVolume = orderBook.asks.reduce((acc, ask) => acc + ask.size, 0);
     const totalVolume = totalBuyVolume + totalSellVolume;
     const buyPercentage = (totalBuyVolume / totalVolume) * 100;
     const sellPercentage = (totalSellVolume / totalVolume) * 100;
 
-    const sortedAsks = [...orderBook.asks].sort((a, b) => a.price - b.price);
-    if (!mounted) {
-        return (
-            <div className="w-full max-w-xs mx-auto bg-black text-white p-4">
-                <div className="text-center py-4">Loading order book...</div>
-            </div>
-        );
+    // Only show skeleton on initial load
+    if (!mounted || initialLoading) {
+        return <OrderBookSkeleton layoutMode={layoutMode} />;
     }
-
     return (
-        <div className="w-full max-w-xs mx-auto bg-[#141414] bg-opacity-50 rounded-xl border border-[#1B1B1B] text-white p-4">
+        <div className="w-full max-w-xs mx-auto bg-gray-900 rounded-xl border border-gray-800 text-white p-4">
             {/* Header Controls */}
             <div className="flex items-center justify-between mb-4">
                 <div className="flex gap-2">
@@ -181,8 +232,7 @@ const OrderBookComponent: React.FC = () => {
                     </button>
                     <button
                         onClick={toggleLayoutMode}
-                        className={`p-2 rounded hover:bg-gray-700 ${layoutMode === 'depth' ? 'bg-blue-500' : 'bg-gray-800'
-                            }`}
+                        className={`p-2 rounded hover:bg-gray-700 ${layoutMode === 'depth' ? 'bg-blue-500' : 'bg-gray-800'}`}
                     >
                         <Grid className="w-3 h-3" />
                     </button>
@@ -198,183 +248,153 @@ const OrderBookComponent: React.FC = () => {
                 </select>
             </div>
 
-            {/* Last Price */}
-            {/* <div className="text-center mb-4">
-                <div className={`flex items-center justify-center text-xl ${priceDirection === 'up' ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                    {orderBook.lastPrice.toFixed(2)}
-                    {priceDirection === 'up' ? (
-                        <ArrowUpRight className="w-5 h-5 ml-1" />
-                    ) : (
-                        <ArrowDownRight className="w-5 h-5 ml-1" />
-                    )}
-                </div>
-                <div className="text-gray-400 text-sm">
-                    Spread: {orderBook.spread}%
-                </div>
-            </div> */}
-
-            {layoutMode === 'depth' ? (
-                // Depth View Layout
-                <div>
-                    {/* Last Price */}
-                    <div className="text-center mb-4">
-                        <div className={`flex items-center justify-center text-md ${priceDirection === 'up' ? 'text-green-400' : 'text-red-400'
-                            }`}>
-                            {orderBook.lastPrice.toFixed(2)}
-                            {priceDirection === 'up' ? (
-                                <ArrowUp className="w-4 h-4 ml-1" />
-                            ) : (
-                                <ArrowDown className="w-4 h-4 ml-1" />
-                            )}
-                        </div>
-                        <div className="text-white text-sm">
-                            Spread: {orderBook.spread}%
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 text-gray-400 mb-2">
-                        <div>Size</div>
-                        <div className="text-center">Price</div>
-                        <div className="text-right">Size</div>
-                    </div>
-
-                    <div className="space-y-1">
-                        {orderBook.asks.map((ask, i) => (
-                            <div key={`depth-${i}`} className="grid relative text-xs py-1" style={{ gridTemplateColumns: '1fr 2fr 1fr' }}>
-                                <div className="text-gray-200 z-10">
-                                    {orderBook.bids[i]?.size.toFixed(6)}
-                                </div>
-                                <div className="grid grid-cols-2 gap-x-3 z-10">
-                                    <div className="text-green-400 text-right">
-                                        {orderBook.bids[i]?.price.toFixed(2)}
-                                    </div>
-                                    <div className="text-red-400">
-                                        {ask.price.toFixed(2)}
-                                    </div>
-                                </div>
-                                <div className="text-right text-gray-200 z-10">
-                                    {ask.size.toFixed(6)}
-                                </div>
-
-                                {/* Background bars - starting from center */}
-                                <div
-                                    className="absolute left-[50%] top-0 bottom-0 bg-green-900/40"
-                                    style={{
-                                        width: `${(orderBook.bids[i]?.size / Math.max(...orderBook.bids.map(b => b.size))) * 50}%`,
-                                        transform: 'translateX(-100%)'
-                                    }}
-                                />
-                                <div
-                                    className="absolute left-[50%] top-0 bottom-0 bg-red-900/40"
-                                    style={{
-                                        width: `${(ask.size / Math.max(...orderBook.asks.map(a => a.size))) * 50}%`
-                                    }}
-                                />
+            <div className="transition-all duration-300 ease-in-out">
+                {layoutMode === 'depth' ? (
+                    // Depth View Layout
+                    <div>
+                        {/* Last Price */}
+                        <div className="text-center mb-4">
+                            <div className={`flex items-center justify-center text-md ${priceDirection === 'up' ? 'text-green-400' : 'text-red-400'}`}>
+                                {formatPrice(orderBook.lastPrice)}
+                                {priceDirection === 'up' ? (
+                                    <ArrowUp className="w-4 h-4 ml-1" />
+                                ) : (
+                                    <ArrowDown className="w-4 h-4 ml-1" />
+                                )}
                             </div>
-                        ))}
-                    </div>
-                </div>
-            ) : (
-                // Standard Layout
-                <div>
-                    {/* Column Headers */}
-                    <div className="grid grid-cols-2 mb-2 text-gray-400 text-sm">
-                        <div>Price</div>
-                        <div className="text-right">Size</div>
-                    </div>
+                            <div className="text-white text-sm">
+                                Spread: {orderBook.spread}%
+                            </div>
+                        </div>
 
-                    {(viewType === 'both' || viewType === 'asks') && (
-                        <div className="flex flex-col-reverse space-y-1 space-y-reverse">
-                            {sortedAsks.map((ask, i) => (
-                                <div key={`ask-${i}`} className="relative group">
+                        <div className="grid grid-cols-3 text-gray-400 mb-2">
+                            <div>Size</div>
+                            <div className="text-center">Price</div>
+                            <div className="text-right">Size</div>
+                        </div>
+
+                        <div className="space-y-1">
+                            {orderBook.asks.map((ask, i) => (
+                                <div key={`depth-${i}`} className="grid relative text-xs py-1" style={{ gridTemplateColumns: '1fr 2fr 1fr' }}>
+                                    <div className="text-gray-200 z-10">
+                                        {orderBook.bids[i]?.size.toFixed(6)}
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-x-3 z-10">
+                                        <div className="text-green-400 text-right">
+                                            {formatPrice(orderBook.bids[i]?.price)}
+                                        </div>
+                                        <div className="text-red-400">
+                                            {formatPrice(ask.price)}
+                                        </div>
+                                    </div>
+                                    <div className="text-right text-gray-200 z-10">
+                                        {ask.size.toFixed(6)}
+                                    </div>
+
                                     <div
-                                        className="absolute left-0 top-0 bottom-0 bg-red-900/40"
+                                        className="absolute left-1/2 top-0 bottom-0 bg-green-900/40 transition-all duration-300"
                                         style={{
-                                            width: `${(ask.total || 0) / Math.max(...orderBook.asks.map(a => a.total || 0)) * 100}%`
+                                            width: `${(orderBook.bids[i]?.size / Math.max(...orderBook.bids.map(b => b.size))) * 50}%`,
+                                            transform: 'translateX(-100%)'
                                         }}
                                     />
-                                    <div className="relative grid grid-cols-2 py-1 group-hover:bg-gray-800 text-xs font-light">
-                                        <div className="text-red-400">{ask.price.toFixed(2)}</div>
-                                        <div className="text-right text-gray-200">{ask.size.toFixed(6)}</div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {/* Spread */}
-                    {viewType === 'both' && (
-                        <div className="text-gray-400 text-md py-2">
-                            <div className="flex items-center">
-                                <div className={`flex items-center justify-center  ${priceDirection === 'up' ? 'text-green-400' : 'text-red-400'
-                                    }`}>
-                                    {orderBook.lastPrice.toFixed(2)}
-                                    {priceDirection === 'up' ? (
-                                        <ArrowUp className="w-3 h-3 ml-1" />
-                                    ) : (
-                                        <ArrowDown className="w-3 h-3 ml-1" />
-                                    )}
-                                </div>
-                                <span className="ml-2 text-white">{orderBook.spread}% Spread</span>
-                            </div>
-                        </div>
-                    )}
-
-                    {(viewType === 'both' || viewType === 'bids') && (
-                        <div className="space-y-1">
-                            {orderBook.bids.map((bid, i) => (
-                                <div key={`bid-${i}`} className="relative group">
                                     <div
-                                        className="absolute left-0 top-0 bottom-0 bg-green-900/40"
-                                        style={{ width: `${(bid.total || 0) / Math.max(...orderBook.bids.map(b => b.total || 0)) * 100}%` }}
+                                        className="absolute left-1/2 top-0 bottom-0 bg-red-900/40 transition-all duration-300"
+                                        style={{
+                                            width: `${(ask.size / Math.max(...orderBook.asks.map(a => a.size))) * 50}%`
+                                        }}
                                     />
-                                    <div className="relative grid grid-cols-2 py-1 group-hover:bg-gray-800 text-xs font-light">
-                                        <div className="text-green-400">{bid.price.toFixed(2)}</div>
-                                        <div className="text-right text-gray-200">{bid.size.toFixed(6)}</div>
-                                    </div>
                                 </div>
                             ))}
                         </div>
-                    )}
-                </div>
-            )}
+                    </div>
+                ) : (
+                    // Standard Layout
+                    <div>
+                        <div className="grid grid-cols-2 mb-2 text-gray-400 text-sm">
+                            <div>Price</div>
+                            <div className="text-right">Size</div>
+                        </div>
 
-            {/* Buy/Sell Distribution */}
-            {/* <div className="mt-4 h-2 flex rounded overflow-hidden">
-                <div
-                    className="bg-green-600/80 transition-all duration-500"
-                    style={{ width: `${buyPercentage}%` }}
-                />
-                <div
-                    className="bg-red-600/80 transition-all duration-500"
-                    style={{ width: `${sellPercentage}%` }}
-                />
+                        {(viewType === 'both' || viewType === 'asks') && (
+                            <div className="flex flex-col-reverse space-y-1 space-y-reverse">
+                                {orderBook.asks.map((ask, i) => (
+                                    <div key={`ask-${i}`} className="relative group">
+                                        <div
+                                            className="absolute left-0 top-0 bottom-0 bg-red-900/40 transition-all duration-300"
+                                            style={{
+                                                width: `${(ask.total || 0) / Math.max(...orderBook.asks.map(a => a.total || 0)) * 100}%`
+                                            }}
+                                        />
+                                        <div className="relative grid grid-cols-2 py-1 group-hover:bg-gray-800 text-xs font-light">
+                                            <div className="text-red-400">{formatPrice(ask.price)}</div>
+                                            <div className="text-right text-gray-200">{ask.size.toFixed(6)}</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {viewType === 'both' && (
+                            <div className="text-gray-400 text-md py-2">
+                                <div className="flex items-center">
+                                    <div className={`flex items-center justify-center ${priceDirection === 'up' ? 'text-green-400' : 'text-red-400'}`}>
+                                        {formatPrice(orderBook.lastPrice)}
+                                        {priceDirection === 'up' ? (
+                                            <ArrowUp className="w-3 h-3 ml-1" />
+                                        ) : (
+                                            <ArrowDown className="w-3 h-3 ml-1" />
+                                        )}
+                                    </div>
+                                    <span className="ml-2 text-white">Spread: {orderBook.spread}%</span>
+                                </div>
+                            </div>
+                        )}
+
+                        {(viewType === 'both' || viewType === 'bids') && (
+                            <div className="space-y-1">
+                                {orderBook.bids.map((bid, i) => (
+                                    <div key={`bid-${i}`} className="relative group">
+                                        <div
+                                            className="absolute left-0 top-0 bottom-0 bg-green-900/40 transition-all duration-300"
+                                            style={{
+                                                width: `${(bid.total || 0) / Math.max(...orderBook.bids.map(b => b.total || 0)) * 100}%`
+                                            }}
+                                        />
+                                        <div className="relative grid grid-cols-2 py-1 group-hover:bg-gray-800 text-xs font-light">
+                                            <div className="text-green-400">{formatPrice(bid.price)}</div>
+                                            <div className="text-right text-gray-200">{bid.size.toFixed(6)}</div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
-            <div className="flex justify-between text-sm mt-1">
-                <div className="text-green-400">
-                    Buy {buyPercentage.toFixed(1)}%
-                </div>
-                <div className="text-red-400">
-                    Sell {sellPercentage.toFixed(1)}%
-                </div>
-            </div> */}
 
-            {/* Distribution bar */}
             <div className="h-6 flex mt-4 text-xs">
+                {/* Buy Section */}
                 <div
-                    className="bg-green-900/40 flex items-center justify-start"
+                    className="bg-green-900/40 flex items-center justify-start px-2 transition-all duration-300"
                     style={{ width: `${buyPercentage}%` }}
                 >
-                    <span className="text-green-400 font-medium">Buy {buyPercentage.toFixed(1)}%</span>
+                    <span className="text-green-400 font-medium flex-shrink-0">
+                        Buy {buyPercentage.toFixed(1)}%
+                    </span>
                 </div>
+
+                {/* Sell Section */}
                 <div
-                    className="bg-red-900/40 flex items-center justify-end"
+                    className="bg-red-900/40 flex items-center justify-end px-2 transition-all duration-300"
                     style={{ width: `${sellPercentage}%` }}
                 >
-                    <span className="text-red-400 font-medium text-end">{sellPercentage.toFixed(1)}% Sell</span>
+                    <span className="text-red-400 font-medium text-end flex-shrink-0">
+                        {sellPercentage.toFixed(1)}% Sell
+                    </span>
                 </div>
             </div>
+
         </div>
     );
 };
