@@ -80,44 +80,65 @@ export default function TradingLayout() {
             </div>
 
             {/* Bottom Section */}
-            <div className="border-t border-gray-800 p-4">
-                <Tabs defaultValue="positions" className="w-full">
-                    <TabsList className="max-w-sm grid grid-cols-3 gap-x-2 bg-gray-900 p-1">
+            <div className="border-t border-gray-800 p-4 ">
+                <Tabs defaultValue="positions" className="w-full bg-gray-900 p-4 rounded-xl border border-gray-800">
+                    <TabsList className="relative w-full flex justify-start space-x-12 pl-6 border-b border-gray-800 bg-transparent">
                         <TabsTrigger
                             value="positions"
-                            className="data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-400 hover:text-gray-200"
+                            className="relative px-1 pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 data-[state=active]:text-white transition-colors
+                       after:absolute after:bottom-[-1px] after:left-0 after:h-[2px] after:w-full 
+                       after:scale-x-0 data-[state=active]:after:scale-x-100
+                       after:bg-gradient-to-r after:from-[#0064A7] after:to-[#00416C]
+                       after:transition-transform after:duration-300"
                         >
                             Positions
                         </TabsTrigger>
                         <TabsTrigger
                             value="open-orders"
-                            className="data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-400 hover:text-gray-200"
+                            className="relative px-1 pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 data-[state=active]:text-white transition-colors
+                       after:absolute after:bottom-[-1px] after:left-0 after:h-[2px] after:w-full 
+                       after:scale-x-0 data-[state=active]:after:scale-x-100
+                       after:bg-gradient-to-r after:from-[#0064A7] after:to-[#00416C]
+                       after:transition-transform after:duration-300"
                         >
                             Open Orders
                         </TabsTrigger>
                         <TabsTrigger
                             value="trade-history"
-                            className="data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-400 hover:text-gray-200"
+                            className="relative px-1 pb-3 text-sm font-medium text-gray-400 hover:text-gray-200 data-[state=active]:text-white transition-colors
+                       after:absolute after:bottom-[-1px] after:left-0 after:h-[2px] after:w-full 
+                       after:scale-x-0 data-[state=active]:after:scale-x-100
+                       after:bg-gradient-to-r after:from-[#0064A7] after:to-[#00416C]
+                       after:transition-transform after:duration-300"
                         >
                             Trade History
                         </TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="positions" className="py-4">
-                        <div className="text-center text-gray-500">
-                            Sign In to see your positions
+                    <TabsContent value="positions" className="py-8">
+                        <div className="flex items-center justify-center space-x-2 text-gray-400">
+                            <span className="text-[#0064A7] hover:text-[#00416C] transition-colors cursor-pointer">
+                                Sign In
+                            </span>
+                            <span>to see your positions</span>
                         </div>
                     </TabsContent>
 
-                    <TabsContent value="open-orders" className="py-4">
-                        <div className="text-center text-gray-500">
-                            Sign In to see your open orders
+                    <TabsContent value="open-orders" className="py-8">
+                        <div className="flex items-center justify-center space-x-2 text-gray-400">
+                            <span className="text-[#0064A7] hover:text-[#00416C] transition-colors cursor-pointer">
+                                Sign In
+                            </span>
+                            <span>to see your open orders</span>
                         </div>
                     </TabsContent>
 
-                    <TabsContent value="trade-history" className="py-4">
-                        <div className="text-center text-gray-500">
-                            Sign In to see your trade history
+                    <TabsContent value="trade-history" className="py-8">
+                        <div className="flex items-center justify-center space-x-2 text-gray-400">
+                            <span className="text-[#0064A7] hover:text-[#00416C] transition-colors cursor-pointer">
+                                Sign In
+                            </span>
+                            <span>to see your trade history</span>
                         </div>
                     </TabsContent>
                 </Tabs>

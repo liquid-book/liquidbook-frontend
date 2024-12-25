@@ -1,71 +1,72 @@
-import useCurrentTheme from "@/hooks/styles/theme";
 import { Menu, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { Button } from "../button/button";
 import { Sheet, SheetContent, SheetTrigger } from "../sheet/sheet";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const Header = () => {
-  const { setTheme } = useTheme();
-  const currentTheme = useCurrentTheme();
-  const links = [
-    {
-      destination: "/",
-      label: "Home",
-    },
-    {
-      destination: "/trade",
-      label: "Trade",
-    },
-    // {
-    //   destination: "/dex",
-    //   label: "Dex",
-    // },
-    // {
-    //   destination: "/docs",
-    //   label: "Documentation",
-    // },
-  ];
+  const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
 
-  const changeTheme = () => {
-    setTheme(currentTheme === "dark" ? "light" : "dark");
-  };
+  const links = [
+    { destination: "/", label: "Home" },
+    { destination: "/trade", label: "Trade" },
+  ];
 
   return (
     <header className="backdrop-blur-sm lg:px-[10vw] mx-auto w-full fixed z-50">
-      <nav className="flex flex-row justify-between items-center py-2 px-2">
-        <div className="flex flex-row gap-2 grow">
-          <Link href="/" className="flex flex-row gap-2 w-56">
+      <nav className="flex flex-row justify-between items-center py-3 px-2">
+        <div className="w-56">
+          <Link href="/" className="flex flex-row gap-2">
             <img
-              src={currentTheme === "dark" ? "/logo.png" : "/logo-w.png"}
+              src={theme === "dark" ? "/logo.png" : "/logo-blue.svg"}
               className="h-8"
               alt="Liquid Book Logo"
             />
-            <p className="text-2xl lg:text-3xl font-bold mr-6">Liquid Book</p>
+            <p className="text-2xl lg:text-3xl font-bold text-[#0064A7] dark:text-white">
+              Liquid Book
+            </p>
           </Link>
-          <div className="hidden lg:flex gap-4 items-center mx-auto">
-            {links.map((link) => (
-              <Link
-                key={link.label}
-                href={link.destination}
-                passHref
-                className={`block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-white
-                  hover:bg-gradient-to-r from-[#2B3990] to-[#533593] hover:text-white`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
         </div>
-        <div className="hidden lg:flex gap-2 w-56 justify-end">
-          <Button variant="ghost" onClick={changeTheme}>
-            {currentTheme === "light" ? <Sun /> : <Moon />}
+
+        <div className="hidden md:flex items-center justify-center flex-1 gap-4">
+          {links.map((link) => (
+            <Link
+              key={link.label}
+              href={link.destination}
+              className={cn(
+                "text-sm lg:text-lg px-4 py-1 rounded-lg transition-all",
+                "hover:bg-[#0064A7]/10 hover:text-[#0064A7]",
+                "dark:hover:bg-white/10 dark:hover:text-white",
+                pathname === link.destination ? (
+                  "bg-[#0064A7] text-white dark:bg-white dark:text-[#0064A7]"
+                ) : (
+                  "text-[#0064A7] dark:text-gray-200"
+                )
+              )}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="w-56 flex justify-end">
+          <Button
+            variant="ghost"
+            size="lg"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="hidden sm:flex text-[#0064A7] dark:text-gray-200"
+          >
+            {theme === "dark" ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
           </Button>
         </div>
+
         <div className="flex gap-2 lg:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" className="block lg:hidden">
+              <Button variant="ghost" className="text-[#0064A7] dark:text-gray-200">
                 <Menu />
               </Button>
             </SheetTrigger>
@@ -75,52 +76,25 @@ const Header = () => {
                   <h2 className="text-2xl font-bold">Liquid Book</h2>
                 </div>
                 <div className="flex flex-col gap-4">
-                  {links.map((link) =>
-                    link.label === "Pools" ? (
-                      <div key={link.label} className="space-y-2">
-                        <Button
-                          variant="ghost"
-                          className="w-full justify-start font-medium"
-                        >
-                          {link.label}
-                        </Button>
-                        <div className="pl-4 space-y-2 border-l-2 border-gray-200 dark:border-gray-700">
-                          <Link href="/pools">
-                            <Button
-                              variant="ghost"
-                              className="w-full justify-start text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
-                            >
-                              Explore Pools
-                            </Button>
-                          </Link>
-                          <Link href="/pools/create">
-                            <Button
-                              variant="ghost"
-                              className="w-full justify-start text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
-                            >
-                              Create Pools
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    ) : (
-                      <Link key={link.label} href={link.destination}>
-                        <Button
-                          variant="ghost"
-                          className="w-full justify-start font-medium"
-                        >
-                          {link.label}
-                        </Button>
-                      </Link>
-                    )
-                  )}
+                  {links.map((link) => (
+                    <Link key={link.label} href={link.destination}>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start font-medium"
+                      >
+                        {link.label}
+                      </Button>
+                    </Link>
+                  ))}
                 </div>
-
-                {/* Bottom Section */}
-                <div className="mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="mt-auto pt-4 border-t border-gray-200 dark:border-[#0064A7]">
                   <div className="flex items-center justify-between">
-                    <Button variant="ghost" size="icon" onClick={changeTheme}>
-                      {currentTheme === "light" ? <Sun /> : <Moon />}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    >
+                      {theme === "dark" ? <Sun /> : <Moon />}
                     </Button>
                   </div>
                 </div>

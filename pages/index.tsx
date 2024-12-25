@@ -4,88 +4,72 @@ import { Button } from "@/components/button/button";
 import StartedCard from "@/components/card/starter-card";
 import DevCarousel from "@/components/carousels/dev-carousel";
 import TradeCarousel from "@/components/carousels/trader-carousel";
+import DeveloperFeatures from "@/components/developer-section/developer-section";
+import FeaturesGrid from "@/components/feature-grid/feature-grid";
 import KeyFeatures from "@/components/key-features/key-features";
+import TradersSection from "@/components/traders-section/traders-section";
 import AnimatedGradientText from "@/components/ui/animated-gradient-text";
+import DotPattern from "@/components/ui/dot-pattern";
+import GridPattern from "@/components/ui/grid-pattern";
 import RetroGrid from "@/components/ui/retro-grid";
 import ShimmerButton from "@/components/ui/shimmer-button";
 import ClientWrapper from "@/components/wrapper/client-wrapper";
 import { cn } from "@/lib/utils";
 import type { NextPage } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef } from "react";
 import * as z from "zod";
-
-const faucetSchema = z.object({
-  token: z.string().min(1),
-});
 
 const Home: NextPage = () => {
 
 
   return (
     <main>
-      <div className="w-full">
-        {/* Hero Section */}
-        <div className="w-full max-w-screen-2xl mx-auto min-h-[calc(100vh)] bg-cover bg-center text-gray-900 dark:text-white flex items-center justify-center px-4 py-6 sm:p-8 lg:p-6">
-          <div className="w-full mx-auto flex flex-col-reverse lg:flex-row items-center justify-center gap-8 lg:gap-12">
-            <LeftSection />
-            <RightSection />
+      <div className="w-full max-w-screen-2xl mx-auto min-h-[calc(92vh)] bg-cover bg-center text-gray-900 dark:text-white flex items-center justify-center">
+        <div className="w-full mx-auto flex flex-col items-center justify-center">
+          <div className="w-full text-center max-w-6xl z-10">
+            <div className="z-10 flex items-center justify-center">
+              <AnimatedGradientText className="">
+                <span className={cn(
+                  "h-22 text-3xl md:text-4xl lg:text-8xl lg:leading-[90px] font-bold inline animate-gradient bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent",
+                  "bg-gradient-to-r from-[#0064A7] via-[#00416C] to-[#0064A7] dark:from-[#0076C4] dark:via-[#00416C] dark:to-[#0076C4]"
+                )}>
+                  Most Capital Efficient Order Book DEX
+                </span>
+              </AnimatedGradientText>
+            </div>
+
+            <p className="text-base sm:text-lg md:text-2xl text-gray-900 dark:text-white leading-relaxed my-4 mx-auto max-w-3xl py-2">
+              Secure, Transparent, and Lightning-Fast
+              <br />
+              Harness the Power of Decentralization for Seamless Trade Execution
+            </p>
+
+            <Link href="/trade">
+              <Button variant="blue" size="xl" className="mt-4">
+                Trade Now
+              </Button>
+            </Link>
           </div>
-          <RetroGrid />
         </div>
-        <KeyFeatures />
-        {/* yang aku commet belom responsive ya */}
-        <TradeCarousel />
-        <DevCarousel />
-        <StartedCard />
+        <DotPattern
+          className={cn(
+            "[mask-image:radial-gradient(1000px_circle_at_center,white,transparent)]",
+          )}
+        />
+      </div>
+      <div className="w-full mx-auto min-h-[calc(100vh)] bg-cover bg-center text-gray-900 dark:text-white flex items-center justify-center sm:py-8 lg:py-6">
+        <FeaturesGrid />
+      </div>
+      <div>
+        <TradersSection />
+      </div>
+      <div>
+        <DeveloperFeatures />
       </div>
     </main>
   );
 };
 
 export default Home;
-
-const LeftSection = () => {
-  return (
-    <div className="w-full lg:w-2/3 text-center lg:text-left">
-      <div className="z-10 flex items-center justify-center lg:justify-start">
-        <AnimatedGradientText>
-          <span
-            className={cn(
-              // `h-22 text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold inline animate-gradient bg-gradient-to-r from-[#8FA4DD] via-[#1e3a8a] to-[#8FA4DD] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
-              `h-22 text-3xl md:text-4xl lg:text-[3.2rem] lg:leading-[50px] font-bold inline animate-gradient bg-gradient-to-r from-[#CBD6F5] via-[#8FA4DD] to-[#CBD6F5] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
-            )}
-          >
-            Gateway to Decentralized Trading Like Never Before
-          </span>
-        </AnimatedGradientText>
-      </div>
-      <p className="text-base sm:text-lg md:text-2xl text-gray-700 dark:text-white leading-relaxed my-5">
-        Secure, Transparent, and Lightning-Fast
-        <br />
-        Harness the Power of Decentralization for Seamless Trade Execution
-
-      </p>
-      <Button variant={"default"} size={"xl"} className="mt-4">
-        Explore More
-      </Button>
-    </div>
-  );
-};
-
-const RightSection = () => {
-  return (
-    <>
-      <div className="hidden lg:flex w-full lg:w-1/3 justify-center lg:justify-end items-center">
-        <div className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 lg:w-[35rem] md:h-[30rem] relative flex justify-center items-center animate-float">
-          <Image
-            src="/gif-hero.gif"
-            alt="Protect.Fi Logo"
-            width={500}
-            height={500}
-            className="object-contain block rounded-2xl"
-          />
-        </div>
-      </div>
-    </>
-  );
-};

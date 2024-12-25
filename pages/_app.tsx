@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           })}
         >
           <Head>
-            <link rel="icon" type="image/webp" href="/logo-w.png" />
+            <link rel="icon" type="image/webp" href="/logo-blue.svg" />
           </Head>
           <ThemeProvider
             disableTransitionOnChange
@@ -72,7 +72,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             // defaultTheme="system"
           >
             <Header />
-            <div className="lg:px-[10vw]">
+            <div className="">
               {page}
             </div>
             <Footer />
