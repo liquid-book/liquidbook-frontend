@@ -13,6 +13,8 @@ import TradingViewChart from "./trading-view"
 import TradingViewWidget from "./trading-view"
 import MarketDataWidget from "../market-widget/market-widget"
 import RecentTradesComponent from "../recent-trade/recent-trade"
+import BuyComponent from "../market/buy"
+import SellComponent from "../market/sell"
 
 export default function TradingLayout() {
     const { setTheme } = useTheme();
@@ -47,7 +49,7 @@ export default function TradingLayout() {
             </div>
 
             {/* Main Content */}
-            <div className="grid grid-cols-[1fr_300px] gap-4 px-4 pb-2">
+            <div className="grid grid-cols-[1fr_300px_300px] gap-4 px-4 pb-2">
                 {/* Chart Section */}
                 <div className="space-y-4">
                     <TradingViewWidget />
@@ -73,9 +75,35 @@ export default function TradingLayout() {
                         <TabsContent value="order-book" className="mt-2 space-y-4">
                             <OrderBookComponent />
                         </TabsContent>
-                        <TabsContent value="recent-trades" className="mt-2">
+                        <TabsContent value="recent-trades" className="mt-2 space-y-4">
                             {/* Recent trades content will go here */}
                             <RecentTradesComponent/>
+                        </TabsContent>
+                    </Tabs>
+                </div>
+
+                {/* Jual Beli */}
+                <div className="space-y-4">
+                    <Tabs defaultValue="order-book" className="w-full">
+                        <TabsList className="grid w-full grid-cols-2 bg-gray-900 p-1">
+                            <TabsTrigger
+                                value="order-book"
+                                className="data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-400 hover:text-gray-200"
+                            >
+                                Buy
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="recent-trades"
+                                className="data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-400 hover:text-gray-200"
+                            >
+                                Sell
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="order-book" className="mt-2 space-y-4">
+                            <BuyComponent/>
+                        </TabsContent>
+                        <TabsContent value="recent-trades" className="mt-2 space-y-4">
+                            <SellComponent/>
                         </TabsContent>
                     </Tabs>
                 </div>

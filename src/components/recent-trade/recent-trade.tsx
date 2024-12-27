@@ -47,7 +47,7 @@ const RecentTradesComponent = () => {
 
         const fetchTrades = async() => {
             try {
-                const response = await fetch('https://www.okx.com//api/v5/market/trades?instId=ETH-USDC&limit=20');
+                const response = await fetch('https://www.okx.com//api/v5/market/trades?instId=ETH-USDC&limit=16');
                 const data = await response.json();
                 console.log(data);
                 
