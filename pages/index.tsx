@@ -30,6 +30,7 @@ const Home: NextPage = () => {
         <div className="w-full mx-auto flex flex-col items-center justify-center">
           <div className="w-full text-center max-w-6xl z-10">
             <div className="z-10 flex items-center justify-center">
+              
               <AnimatedGradientText className="">
                 <span className={cn(
                   "h-22 text-3xl md:text-4xl lg:text-8xl lg:leading-[90px] font-bold inline animate-gradient bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent",
