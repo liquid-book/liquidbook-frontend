@@ -12,6 +12,7 @@ import OrderBookComponent from "../order-book/order-book"
 import TradingViewChart from "./trading-view"
 import TradingViewWidget from "./trading-view"
 import MarketDataWidget from "../market-widget/market-widget"
+import RecentTradesComponent from "../recent-trade/recent-trade"
 
 export default function TradingLayout() {
     const { setTheme } = useTheme();
@@ -74,6 +75,7 @@ export default function TradingLayout() {
                         </TabsContent>
                         <TabsContent value="recent-trades" className="mt-2">
                             {/* Recent trades content will go here */}
+                            <RecentTradesComponent/>
                         </TabsContent>
                     </Tabs>
                 </div>
