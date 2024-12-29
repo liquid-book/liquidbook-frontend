@@ -63,7 +63,7 @@ const TabComponent = (type: string) => {
                 <span className="font-semibold">Estimated Costs</span>
                 <span className="font-semibold">$ 0</span>
             </div>
-            <button className="w-full text-center text-lg font-semibold mt-2 py-2 bg-green-500 hover:opacity-80 rounded-xl">
+            <button className="w-full text-center text-lg font-semibold mt-2 py-2 bg-[#0064A7] hover:opacity-80 rounded-xl">
                 Buy
             </button>
         </div>
@@ -77,25 +77,25 @@ const BuyComponent = () => {
                 <TabsList>
                     <TabsTrigger 
                         value="market"
-                        className="data-[state=active]:border-b-green-500 data-[state=active]:border-b-2 data-[state=active]:text-white text-xs font-bold p-1 text-gray-400 hover:text-gray-200 px-2 mr-1"
+                        className="data-[state=active]:border-b-[#0064A7] data-[state=active]:border-b-2 data-[state=active]:text-white text-xs font-bold p-1 text-gray-400 hover:text-gray-200 px-2 mr-1"
                     >
                         Market
                     </TabsTrigger>
                     <TabsTrigger 
                         value="limit"
-                        className="data-[state=active]:border-b-green-500 data-[state=active]:border-b-2 data-[state=active]:text-white text-xs font-bold p-1 text-gray-400 hover:text-gray-200 px-2 mr-1"    
+                        className="data-[state=active]:border-b-[#0064A7] data-[state=active]:border-b-2 data-[state=active]:text-white text-xs font-bold p-1 text-gray-400 hover:text-gray-200 px-2 mr-1"    
                     >
                         Limit
                     </TabsTrigger>
                     <TabsTrigger 
                         value="stop"
-                        className="data-[state=active]:border-b-green-500 data-[state=active]:border-b-2 data-[state=active]:text-white text-xs font-bold p-1 text-gray-400 hover:text-gray-200 px-2 mr-1"
+                        className="data-[state=active]:border-b-[#0064A7] data-[state=active]:border-b-2 data-[state=active]:text-white text-xs font-bold p-1 text-gray-400 hover:text-gray-200 px-2 mr-1"
                     >
                         Stop
                     </TabsTrigger>
                     <TabsTrigger 
                         value="stop-limit"
-                        className="data-[state=active]:border-b-green-500 data-[state=active]:border-b-2 data-[state=active]:text-white text-xs font-bold p-1 text-gray-400 hover:text-gray-200 px-2 mr-1"
+                        className="data-[state=active]:border-b-[#0064A7] data-[state=active]:border-b-2 data-[state=active]:text-white text-xs font-bold p-1 text-gray-400 hover:text-gray-200 px-2 mr-1"
                     >
                         Stop-Limit
                     </TabsTrigger>

@@ -57,7 +57,7 @@ const TradingViewWidget = () => {
     <div
       id="tradingview_chart"
       ref={containerRef}
-      className="w-full h-[560px] bg-gray-900"
+      className="w-full h-[587px] bg-gray-900"
     />
   );
 };
