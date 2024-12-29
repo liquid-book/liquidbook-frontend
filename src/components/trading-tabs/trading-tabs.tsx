@@ -66,8 +66,8 @@ const TradingTabs = () => {
                         size: parseFloat(bid[1])
                     }));
 
-                    const sortedAsks = calculateTotal(asks.sort((a, b) => a.price - b.price));
-                    const sortedBids = calculateTotal(bids.sort((a, b) => b.price - a.price));
+                    const sortedAsks = calculateTotal(asks.sort((a: Order, b: Order) => a.price - b.price));
+                    const sortedBids = calculateTotal(bids.sort((a: Order, b: Order) => b.price - a.price));
                     const spreadValue = Number((parseFloat(bookData.asks[0][0]) - parseFloat(bookData.bids[0][0])).toFixed(1));
                     const spreadPercentage = (spreadValue / parseFloat(bookData.asks[0][0]) * 100).toFixed(3);
 
