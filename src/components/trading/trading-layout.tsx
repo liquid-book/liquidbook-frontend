@@ -11,9 +11,8 @@ import TradingViewChart from "./trading-view"
 import TradingViewWidget from "./trading-view"
 import MarketDataWidget from "../market-widget/market-widget"
 import RecentTradesComponent from "../recent-trade/recent-trade"
-import BuyComponent from "../market/buy"
-import SellComponent from "../market/sell"
 import TradingPosition from "./trading-position"
+import BuyAndSell from "../market/buy-and-sell"
 
 export default function TradingLayout() {
     const { setTheme } = useTheme();
@@ -71,26 +70,26 @@ export default function TradingLayout() {
                 </div>
 
                 <div className="space-y-2">
-                    <Tabs defaultValue="order-book" className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 bg-gray-900 p-1">
+                    <Tabs defaultValue="market" className="w-full">
+                        <TabsList className="flex rounded-t-lg w-full bg-[#111827] border-b border-[#303030]">
                             <TabsTrigger
-                                value="order-book"
-                                className="data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-400 hover:text-gray-200"
+                                value="market"
+                                className="flex-1 py-2 text-base data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-[#0064A7] text-gray-400 hover:text-gray-200"
                             >
-                                Buy
+                                Market
                             </TabsTrigger>
                             <TabsTrigger
-                                value="recent-trades"
-                                className="data-[state=active]:bg-gray-800 data-[state=active]:text-white text-gray-400 hover:text-gray-200"
+                                value="limit"
+                                className="flex-1 py-2 text-base data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-[#0064A7] text-gray-400 hover:text-gray-200"
                             >
-                                Sell
+                                Limit
                             </TabsTrigger>
                         </TabsList>
-                        <TabsContent value="order-book" className="mt-1">
-                            <BuyComponent />
+                        <TabsContent value="market" className="mt-0">
+                            {BuyAndSell('market')}
                         </TabsContent>
-                        <TabsContent value="recent-trades" className="mt-1">
-                            <SellComponent />
+                        <TabsContent value="limit" className="mt-0">
+                            {BuyAndSell('limit')}
                         </TabsContent>
                     </Tabs>
                 </div>
