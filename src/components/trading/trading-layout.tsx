@@ -94,9 +94,11 @@ export default function TradingLayout() {
                     </Tabs>
                 </div>
             </div>
-            
+
 
             <TradingPosition />
         </div>
     )
 }
+
+// testing
