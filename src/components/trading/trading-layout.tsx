@@ -13,10 +13,19 @@ import MarketDataWidget from "../market-widget/market-widget"
 import RecentTradesComponent from "../recent-trade/recent-trade"
 import TradingPosition from "./trading-position"
 import BuyAndSell from "../market/buy-and-sell"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { useAccount, useConnect, useDisconnect, useEnsAvatar, useEnsName } from "wagmi"
 
 export default function TradingLayout() {
     const { setTheme } = useTheme();
     const currentTheme = useCurrentTheme();
+
+
+  const { connectors, connect } = useConnect();
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { data: ensName } = useEnsName({ address });
+  const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
 
     const changeTheme = () => {
         setTheme(currentTheme === "dark" ? "light" : "dark");
@@ -25,7 +34,7 @@ export default function TradingLayout() {
         <div className="min-h-screen bg-[#303030] text-white">
             <header className="border-b border-gray-800 px-2 py-3 bg-[#111827]">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                    <div className="w-full flex items-center justify-between space-x-2">
                         <div className="flex items-center space-x-1">
                             <img
                                 src={"/logo.png"}
@@ -34,6 +43,7 @@ export default function TradingLayout() {
                             />
                             <span className="text-xl font-bold pl-1">LIQUID BOOK</span>
                         </div>
+                        <ConnectButton />
                     </div>
                 </div>
             </header>

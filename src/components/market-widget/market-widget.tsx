@@ -114,18 +114,18 @@ export default function MarketDataWidget() {
         <span className="font-medium">ETH-USD</span>
       </div>
       
-      <div className="flex-1 grid grid-cols-7 gap-8">
-        <div className="text-gray-400 text-xs">
+      <div className="flex-1 flex gap-4">
+        <div className="text-gray-400 text-xs w-16">
           <div className='underline'>Mark</div>
           <div>{formatNumber(marketData.markPrice, { prefix: '$' })}</div>
         </div>
 
-        <div className="text-gray-400 text-xs">
+        <div className="text-gray-400 text-xs w-16">
           <div className='underline'>Oracle</div>
           <div>{formatNumber(marketData.spotPrice, { prefix: '$' })}</div>
         </div>
 
-        <div className="text-gray-400 text-xs">
+        <div className="text-gray-400 text-xs w-28">
           <div className=''>24h Change</div>
           <div className={cn(
             marketData.priceChangePercent24h && marketData.priceChangePercent24h >= 0 ? 'text-[#5BBB6F]' : 'text-[#FF6978]'
@@ -139,12 +139,12 @@ export default function MarketDataWidget() {
           </div>
         </div>
 
-        <div className="text-gray-400 text-xs">
+        <div className="text-gray-400 text-xs w-18">
           <div>24h Volume</div>
           <div>{formatNumber(marketData.volume24h, { prefix: '$', compact: true })}</div>
         </div>
 
-        <div className="text-gray-400 text-xs">
+        <div className="text-gray-400 text-xs w-20">
           <div className='underline'>Open Interest</div>
           <div>{formatNumber(marketData.openInterest, { prefix: '$', compact: true })}</div>
         </div>
