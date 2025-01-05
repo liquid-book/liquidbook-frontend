@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 
-export const placeOrderEvents = gql`{
+export const placeOrderEvents = gql` query placeOrderEvents{
     placeOrder(orderBy: timestamp, orderDirection: desc) {
         id
         user
@@ -11,7 +11,7 @@ export const placeOrderEvents = gql`{
     }
 }`
 
-export const insertOrderEvents = gql`{
+export const insertOrderEvents = gql` query insertOrderEvents{
     insertOrder(orderBy: timestamp, orderDirection: desc) {
         id
         user
@@ -22,7 +22,7 @@ export const insertOrderEvents = gql`{
     }
 }`
 
-export const insertOrderEventPages = gql`{
+export const insertOrderEventPages = gql` query insertOrderEventPages {
     insertOrderPage() {
         items
         pageInfo
@@ -30,7 +30,7 @@ export const insertOrderEventPages = gql`{
     }
 }`
 
-export const insertOrderEventFilter = gql`{
+export const insertOrderEventFilter = gql` query insertOrderEventFilter {
     insertOrderFilter() {
         AND
         OR
@@ -85,7 +85,7 @@ export const insertOrderEventFilter = gql`{
     }
 }`
 
-export const updateOrderEvents = gql`{
+export const updateOrderEvents = gql` query updateOrderEvents{
     updateOrder(orderBy: timestamp, orderDirection: desc) {
         id
         tick
@@ -95,7 +95,7 @@ export const updateOrderEvents = gql`{
     }
 }`
 
-export const updateOrderEventPage = gql`{
+export const updateOrderEventPage = gql` query updateOrderEventPage {
     updateOrderPage() {
         items
         pageInfo
@@ -103,7 +103,7 @@ export const updateOrderEventPage = gql`{
     }
 }`
 
-export const updateOrderEventFilter = gql`{
+export const updateOrderEventFilter = gql` query updateOrderEventFilter {
     updateOrderFilter() {
         AND
         OR
@@ -152,7 +152,7 @@ export const updateOrderEventFilter = gql`{
     }
 }`
 
-export const setTickDataEvents = gql`{
+export const setTickDataEvents = gql` query setTickDataEvents{
     setTickData(orderBy: timestamp, orderDirection: desc) {
         id
         tick
@@ -163,7 +163,7 @@ export const setTickDataEvents = gql`{
     }
 }`
 
-export const setTickDataEventPage = gql`{
+export const setTickDataEventPage = gql` query setTickDataEventPage {
     setTickDataPage() {
         items
         pageInfo
@@ -171,7 +171,7 @@ export const setTickDataEventPage = gql`{
     }
 }`
 
-export const setTickDataEventFilter = gql`{
+export const setTickDataEventFilter = gql` query setTickDataEventFilter {
     setTickDataFilter() {
         AND
         OR
@@ -220,7 +220,27 @@ export const setTickDataEventFilter = gql`{
     }
 }`
 
-export const setCurrentTickEvents = gql`{
+// export const setCurrentTickEvents = gql`
+//   query setCurrentTickEvents($id: String!) {
+//     setCurrentTick(id: $id, orderBy: timestamp, orderDirection: desc) {
+//       id
+//       tick
+//       timestamp
+//     }
+//   }
+// `;
+
+export const SET_CURRENT_TICK_EVENTS = gql`
+  query SetCurrentTickEvents($id: String!) {
+    setCurrentTick(id: $id, orderBy: timestamp, orderDirection: desc) {
+      id
+      tick
+      timestamp
+    }
+  }
+`;
+
+export const setCurrentTickEvents = gql` query setCurrentTickEvents{
     setCurrentTick(orderBy: timestamp, orderDirection: desc) {
         id
         tick
@@ -228,7 +248,7 @@ export const setCurrentTickEvents = gql`{
     }
 }`
 
-export const setCurrentTickEventPage = gql`{
+export const setCurrentTickEventPage = gql` query setCurrentTickEventPage {
     setCurrentTickPage() {
         items
         pageInfo
@@ -236,7 +256,7 @@ export const setCurrentTickEventPage = gql`{
     }
 }`
 
-export const setCurrentTickEventFilter = gql`{
+export const setCurrentTickEventFilter = gql` query setCurrentTickEventFilter {
     setCurrentTickFilter() {
         AND
         OR
@@ -269,7 +289,7 @@ export const setCurrentTickEventFilter = gql`{
     }
 }`
 
-export const flipTickEvents = gql`{
+export const flipTickEvents = gql` query flipTickEvents{
     flipTick(orderBy: timestamp, orderDirection: desc) {
         id
         tick
@@ -277,7 +297,7 @@ export const flipTickEvents = gql`{
     }
 }`
 
-export const ticks = gql`{
+export const ticks = gql` query ticks{
     getTick(orderBy: timestamp, orderDirection: desc) {
         id
         tick
@@ -287,7 +307,7 @@ export const ticks = gql`{
     }
 }`
 
-export const orders = gql`{
+export const orders = gql` query orders{
     getOrder(orderBy: timestamp, orderDirection: desc) {
         id
         user
