@@ -30,14 +30,14 @@ export default function TradersSection() {
                     For Traders
                 </h1>
                 <p className="text-xl text-gray-600 dark:text-gray-300 mb-16 max-w-6xl mx-auto">
-                    Discover the tools and technologies that empower traders to make faster, smarter, and more efficient trades. From advanced analytics to real-time integrations, we&apos;ve got you covered.
+                    Discover the tools and technologies that empower traders <br/>to make faster, smarter, and more efficient trades.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {features.map((feature) => (
                         <div
                             key={feature.name}
-                            className="group relative bg-gradient-to-br from-[#0064A7] to-[#00416C] 
+                            className="group relative bg-[#111]
                                      dark:from-[#0064A7]/80 dark:to-[#00416C]/80 
                                      p-8 rounded-lg flex flex-col items-center text-center
                                      border border-gray-100 dark:border-transparent
@@ -51,12 +51,12 @@ export default function TradersSection() {
                                 <feature.Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
                             </div>
 
-                            <h2 className="text-2xl underline font-bold mb-4 
+                            <h2 className="text-2xl font-bold mb-4 
                                          bg-gradient-to-r from-[#0064A7] to-[#00416C] bg-clip-text text-white">
                                 {feature.name}
                             </h2>
 
-                            <p className="text-white mb-8 flex-grow">
+                            <p className="text-white mb-8 flex-grow font-thin">
                                 {feature.description}
                             </p>
                         </div>

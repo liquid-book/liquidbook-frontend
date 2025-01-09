@@ -25,7 +25,7 @@ const Header = () => {
               className="h-8"
               alt="Liquid Book Logo"
             />
-            <p className="text-2xl lg:text-3xl font-bold text-[#0064A7] dark:text-white">
+            <p className="text-2xl lg:text-3xl font-medium text-[#0064A7] dark:text-white">
               Liquid Book
             </p>
           </Link>
@@ -40,11 +40,7 @@ const Header = () => {
                 "text-sm lg:text-lg px-4 py-1 rounded-lg transition-all",
                 "hover:bg-[#0064A7]/10 hover:text-[#0064A7]",
                 "dark:hover:bg-white/10 dark:hover:text-white",
-                pathname === link.destination ? (
-                  "bg-[#0064A7] text-white dark:bg-white dark:text-[#0064A7]"
-                ) : (
-                  "text-[#0064A7] dark:text-gray-200"
-                )
+                "text-[#0064A7] dark:text-gray-200"
               )}
             >
               {link.label}
@@ -53,14 +49,14 @@ const Header = () => {
         </div>
 
         <div className="w-56 flex justify-end">
-          <Button
+          {/* <Button
             variant="ghost"
             size="lg"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             className="hidden sm:flex text-[#0064A7] dark:text-gray-200"
           >
             {theme === "dark" ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
-          </Button>
+          </Button> */}
         </div>
 
         <div className="flex gap-2 lg:hidden">

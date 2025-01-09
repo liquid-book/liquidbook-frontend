@@ -71,11 +71,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             value={{ light: "light", dark: "dark" }}
             // defaultTheme="system"
           >
-            {/* <Header /> */}
+            <Header />
             <div className="">
               {page}
             </div>
-            {/* <Footer /> */}
+            <Footer />
           </ThemeProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
